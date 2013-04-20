@@ -1,0 +1,29 @@
+#Copy and paste the setup for camera 1 to declare all your cameras
+#Declare your input URL to the camera. This can be RTSP, MJPEG, etc. Be sure to include any passwords.
+
+#Camera 1 Setup, loop ensures we reconnect if we get disconnected.
+new camera1 broadcast loop enabled
+
+#PROTOCOL = How your camera live feed is being accessed ex: rtsp, http, etc.
+#USER,PASS,IP,PORT = Relevant information to login and find your camera on the network
+#PATH = Some cameras require a path such as LowResolutionVideo/HighResolutionVideo (Logitech Alert)
+
+setup camera1 input PROTOCOL://USER:PASS@IP:PORT/PATH
+
+#Define how we want the feed transcoded, where we want the video files stored, and define how to access the transcoded feed.
+#INDEX-PATH = The location to store the index file which points the browser to the individual TS files.
+#				ex: /var/cameras/Live/camera1.m3u8
+#				This can be outside the access of apache because the code allows for that.
+#INDEX-URL = This is the URL embedded into the index file for the browser to use to access the TS files.
+#				ex: https://yourdomain.com/cameras/?action=getpart&camid=camera1&part=########
+#				Notice the camid variable in the URL. Also, be sure to leave the pound signs as they are. This allows for VLC to autonumber segments.
+#DEST = This is where the segements will be stored.
+#		ex: /var/cameras/Live/camera1-########.ts
+#USER,PASS = Settings for the MJPEG http access. This is used for the all camera viewer. iOS doesn't allow multiple video containers especially on iPhone.
+#			  You can remove this setting if you wish.
+
+setup camera1 output #duplicate{dst="transcode{width=640,height=480,fps=15,vcodec=h264,vb=128,venc=x264{aud,profile=baseline,level=30,keyint=30,ref=1}}:std{access=livehttp{seglen=10,delsegs=true,numsegs=5,index=INDEX-PATH,index-url=INDEX-URL},mux=ts{use-key-frames},dst=DEST}",dst="transcode{vcodec=MJPG,vb=1024,fps=5,width=640,height=480,acodec=none}:standard{access=http{user=USER,pwd=PASS,mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mpjpeg,dst=:5554/camera1.mjpg}"}
+
+#Actually begin transcoding the feed
+
+control camera1 play
