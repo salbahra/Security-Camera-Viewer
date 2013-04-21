@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Security Camera Viewer : A mobile frontend for the Logitech Alert security cameras. Desigened to allow live viewing, recorded video, and motion alerts. Other cameras may work but are untested." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Security Camera Viewer</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/salbahra/Security-Camera-Viewer">View on GitHub</a>
+
+          <h1 id="project_title">Security Camera Viewer</h1>
+          <h2 id="project_tagline">A mobile frontend for the Logitech Alert security cameras. Desigened to allow live viewing, recorded video, and motion alerts. Other cameras may work but are untested.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/salbahra/Security-Camera-Viewer/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/salbahra/Security-Camera-Viewer/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1><a href="http://salbahra.github.io/Security-Camera-Viewer/">Security Camera Viewer</a></h1>
+
+<p>A mobile frontend for the Logitech Alert security cameras. Desigened to allow live viewing, recorded video, and motion alerts. Other cameras may work but are untested.</p>
+
+<h2>Instructions:</h2>
+
+<ul>
+<li>
+<p>You first need a working Logitech Alert setup (other cameras currently unsupported)</p>
+
+<ul>
+<li>Send motion alerts to a dedicated email address which the poller will check</li>
+</ul>
+</li>
+<li>
+<p>Install prerequisites as needed</p>
+
+<ul>
+<li>
+<code>apt-get install ffmpeg vlc apache2 mysql-server mysql-client php5-mysql php5 libapache2-mod-php5</code> </li>
+<li>Depending on your distribution you might have to add multimedia sources to apt or package distribution system</li>
+</ul>
+</li>
+<li>
+<p>Download the files</p>
+
+<ul>
+<li><code>git clone https://github.com/salbahra/Security-Camera-Viewer.git</code></li>
+<li><code>mv camera-viewer/cameras /var/</code></li>
+<li><code>mv camera-viewer/www/cameras /var/www/</code></li>
+<li><code>mv camera-viewer/VLC-init /etc/init.d/</code></li>
+</ul>
+</li>
+<li>
+<p>Fill in the MySQL information, Email information, and site information in config.php.</p>
+
+<ul>
+<li><code>nano /var/www/cameras/config.php</code></li>
+</ul>
+</li>
+<li>
+<p>Modify the feeds.vlm to transcode your videos and auto start VLC</p>
+
+<ul>
+<li><code>nano /var/cameras/feeds.vlm</code></li>
+<li><code>update-rc.d vlc defaults</code></li>
+<li><code>/etc/init.d/vlc start</code></li>
+</ul>
+</li>
+<li>
+<p>Add the poller to crontab every 5 minutes to ensure your database is up to date with new video clips and motion alerts:</p>
+
+<ul>
+<li><code>*/5 * * * *     /usr/bin/php /var/www/cameras/poller.php &gt;/dev/null 2&gt;&amp;1</code></li>
+</ul>
+</li>
+<li>
+<p>Add a user to the configuration. There is no user management system yet, so this is done manually</p>
+
+<ul>
+<li>First generate a hased version of your password</li>
+<li><code>/usr/bin/php -r "echo base64_encode(sha1('PASSWORD'));"</code></li>
+<li>Then add it to the htpasswd file</li>
+<li><code>nano /var/cameras/htpasswd</code></li>
+<li>Example:</li>
+<li><code>username:ZGM3MjRhZjE4ZmJkZDRlNTkxODlmNWZlNzY4YTVmODMxMTUyNzA1MA==</code></li>
+</ul>
+</li>
+<li><p>From there you may attempt to access the front end.</p></li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Security Camera Viewer maintained by <a href="https://github.com/salbahra">salbahra</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-40111352-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
