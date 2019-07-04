@@ -39,5 +39,3 @@ Instructions:
   + ```username:ZGM3MjRhZjE4ZmJkZDRlNTkxODlmNWZlNzY4YTVmODMxMTUyNzA1MA==```
 
 + From there you may attempt to access the front end.
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/9409fbff56b9d1080a184e7fe31e63ff "githalytics.com")](http://githalytics.com/salbahra/Security-Camera-Viewer)
